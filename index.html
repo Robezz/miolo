@@ -167,6 +167,100 @@
   .hero-desc { animation: fadeUp 0.6s 0.2s ease both; }
   .hero-actions { animation: fadeUp 0.6s 0.3s ease both; }
   .hero-metrics { animation: fadeUp 0.6s 0.4s ease both; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    /* Nav mobile */
+    .nav-links { display: none; }
+    .nav-cta { display: none; }
+    nav { padding: 0 1.25rem; }
+    .hamburger {
+      display: flex; flex-direction: column; justify-content: center;
+      gap: 5px; width: 36px; height: 36px; cursor: pointer;
+      background: none; border: none; padding: 4px;
+    }
+    .hamburger span {
+      display: block; height: 1.5px; background: var(--black);
+      border-radius: 2px; transition: all 0.25s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* Mobile menu drawer */
+    .mobile-menu {
+      display: none; position: fixed; top: 64px; left: 0; right: 0;
+      background: var(--white); border-bottom: 1px solid var(--gray-200);
+      padding: 1.5rem; z-index: 99; flex-direction: column; gap: 0;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 16px; color: var(--black); text-decoration: none;
+      padding: 1rem 0; border-bottom: 1px solid var(--gray-100);
+      display: block;
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-cta {
+      margin-top: 1.25rem;
+      font-family: var(--font-sans); font-size: 15px; font-weight: 500;
+      background: var(--black); color: var(--white);
+      border: none; border-radius: var(--radius);
+      padding: 13px 24px; cursor: pointer; width: 100%; text-align: center;
+    }
+
+    /* Hero */
+    .hero { min-height: auto; padding: 3rem 1.25rem 2.5rem; }
+    .hero h1 { font-size: 32px; }
+    .hero-desc { font-size: 15px; }
+    .hero-actions { flex-direction: column; align-items: stretch; }
+    .btn-primary, .btn-ghost { text-align: center; justify-content: center; padding: 14px 20px; font-size: 15px; }
+    .hero-metrics { grid-template-columns: 1fr; }
+    .metric { border-right: none; border-bottom: 1px solid var(--gray-200); }
+    .metric:last-child { border-bottom: none; }
+
+    /* Sections */
+    section { padding: 3rem 1.25rem; }
+    .container { padding: 0; }
+    h2.sec-title { font-size: 26px; }
+    .sec-sub { font-size: 15px; margin-bottom: 2rem; }
+
+    /* Services */
+    .services-grid { grid-template-columns: 1fr; }
+
+    /* Proceso */
+    .paso { gap: 1.25rem; }
+    .paso-n { font-size: 26px; min-width: 36px; }
+
+    /* Casos */
+    .casos-grid { grid-template-columns: 1fr; }
+
+    /* CTA */
+    .cta-inner { padding: 4rem 1.25rem; }
+    .cta-inner h2 { font-size: 26px; }
+    .btn-white { width: 100%; justify-content: center; padding: 14px 20px; font-size: 15px; }
+
+    /* Footer */
+    footer { flex-direction: column; align-items: flex-start; gap: 1.25rem; padding: 1.5rem 1.25rem; }
+    .footer-links { flex-wrap: wrap; gap: 1rem; }
+
+    /* Modal */
+    .modal { padding: 2rem 1.25rem; margin: 1rem; max-height: 90vh; }
+
+    /* Divider */
+    .divider { margin: 0 1.25rem; }
+  }
+
+  @media (max-width: 480px) {
+    .hero h1 { font-size: 28px; }
+    .metric-n { font-size: 30px; }
+  }
+
+  /* Hide hamburger on desktop */
+  @media (min-width: 769px) {
+    .hamburger { display: none; }
+    .mobile-menu { display: none !important; }
+  }
+
 </style>
 </head>
 <body>
@@ -183,7 +277,19 @@
     <li><a href="#contacto">Contacto</a></li>
   </ul>
   <button class="nav-cta">Hablar con un experto</button>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#servicios" onclick="closeMenu()">Servicios</a>
+  <a href="#metodologia" onclick="closeMenu()">Metodología</a>
+  <a href="#casos" onclick="closeMenu()">Casos de éxito</a>
+  <a href="#contacto" onclick="closeMenu()">Contacto</a>
+  <button class="mobile-cta" onclick="closeMenu()">Hablar con un experto</button>
+</div>
 
 <!-- HERO -->
 <div style="max-width:900px; margin:0 auto; padding:0 2rem;">
@@ -436,6 +542,29 @@
     <p>Las presentes condiciones se rigen por la legislación española. Para la resolución de cualquier conflicto derivado del acceso o uso de este sitio web, las partes se someten a los juzgados y tribunales de Vigo, con renuncia expresa a cualquier otro fuero.</p>
   </div>
 </div>
+
+
+<script>
+  function toggleMenu() {
+    const menu = document.getElementById('mobile-menu');
+    const btn = document.getElementById('hamburger');
+    menu.classList.toggle('open');
+    btn.classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('mobile-menu').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+  }
+  // Close menu on outside click
+  document.addEventListener('click', function(e) {
+    const menu = document.getElementById('mobile-menu');
+    const btn = document.getElementById('hamburger');
+    if (!menu.contains(e.target) && !btn.contains(e.target)) {
+      menu.classList.remove('open');
+      btn.classList.remove('open');
+    }
+  });
+</script>
 
 </body>
 </html>
